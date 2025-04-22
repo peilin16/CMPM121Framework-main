@@ -11,7 +11,7 @@ public class EnemyController : MonoBehaviour
 
     public float last_attack;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void Start()
     {
         target = GameManager.Instance.player.transform;
         hp.OnDeath += Die;
@@ -19,7 +19,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         Vector3 direction = target.position - transform.position;
         if (direction.magnitude < 2f)
@@ -31,8 +31,8 @@ public class EnemyController : MonoBehaviour
             GetComponent<Unit>().movement = direction.normalized * speed;
         }
     }
-    
-    void DoAttack()
+
+    public void DoAttack()
     {
         if (last_attack + 2 < Time.time)
         {
@@ -42,7 +42,7 @@ public class EnemyController : MonoBehaviour
     }
 
 
-    void Die()
+    public void Die()
     {
         if (!dead)
         {

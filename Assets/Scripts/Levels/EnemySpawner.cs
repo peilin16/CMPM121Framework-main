@@ -141,6 +141,10 @@ public class EnemySpawner : MonoBehaviour
         GameManager.Instance.countdown = 3;
         for (int i = 3; i > 0; i--)
         {
+
+            if (GameManager.Instance.state == GameManager.GameState.GAMEOVER || GameManager.Instance.state == GameManager.GameState.PREGAME)
+                yield break;
+
             yield return new WaitForSeconds(1);
             GameManager.Instance.countdown--;
         }
@@ -171,7 +175,10 @@ public class EnemySpawner : MonoBehaviour
         yield return StartCoroutine(SpawnBySequence(skeletonSpawn, "skeleton"));
 
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
-        GameManager.Instance.state = GameManager.GameState.WAVEEND;
+
+
+        if(GameManager.Instance.state != GameManager.GameState.GAMEOVER)
+            GameManager.Instance.state = GameManager.GameState.WAVEEND;
     }
 
     
@@ -277,6 +284,7 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy(SpawnConfig config, int wave, int spriteIndex)
     {
+        
         EnemySprite enemyData = GameManager.Instance.enemySpriteManager.GetEnemyData(config.enemy);
         // 1. generate point
         SpawnPoint spawnPoint = SpawnPoints[Random.Range(0, SpawnPoints.Length)];

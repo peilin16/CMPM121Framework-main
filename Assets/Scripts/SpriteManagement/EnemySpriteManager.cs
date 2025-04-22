@@ -10,7 +10,7 @@ public class EnemySpriteManager : IconManager
     void Start()
     {
         GameManager.Instance.enemySpriteManager = this;
-        Debug.Log("Awake1");
+        //Debug.Log("Awake1");
         
         Initialize();
     }

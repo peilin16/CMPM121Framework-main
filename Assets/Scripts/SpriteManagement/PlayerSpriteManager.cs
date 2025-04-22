@@ -10,5 +10,8 @@ public class PlayerSpriteManager : IconManager
     {
         GameManager.Instance.playerSpriteManager = this;
     }
-
+        public void PlayerDie()
+    {
+        
+    }
 }

@@ -65,8 +65,9 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        GameManager.Instance.state = GameManager.GameState.PREGAME;
-        Debug.Log("You Lost");
+        GameManager.Instance.state = GameManager.GameState.GAMEOVER;
+        GameManager.Instance.DestroyAllEnemies(); // 新增这行代码
+        
     }
 
 }
