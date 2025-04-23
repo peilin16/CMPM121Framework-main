@@ -1,42 +1,43 @@
 using UnityEngine;
 using TMPro;
+
 public class TimeInformation : MonoBehaviour
 {
     public TextMeshProUGUI tmp;
-    public float waveSpendTime;
+    public float waveSpendTime = 0f;
     private bool isTiming = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Start()
+
+    void Start()
     {
-        tmp.text = "Spend Time: " + waveSpendTime;
+        tmp.text = "Spend Time: 0s";
     }
 
     void Update()
     {
+        var state = GameManager.Instance.state;
 
-        if (GameManager.Instance.state == GameManager.GameState.INWAVE)
+        if (state == GameManager.GameState.INWAVE)
         {
             if (!isTiming)
             {
-                isTiming = true; 
-                waveSpendTime = 0f; // reset
+                isTiming = true;
+                waveSpendTime = 0f;
             }
-            waveSpendTime += Time.deltaTime; // accuate
-            
+
+            waveSpendTime += Time.deltaTime;
+            tmp.text = ""; // Hide value while wave is ongoing
+        }
+        else if (state == GameManager.GameState.WAVEEND || state == GameManager.GameState.GAMEOVER)
+        {
+            if (isTiming)
+            {
+                isTiming = false;
+                tmp.text = "Spend Time: " + Mathf.Floor(waveSpendTime).ToString("F0") + "s";
+            }
         }
         else
         {
-            isTiming = false; // stop
+            tmp.text = ""; // Hide in other states (PREGAME, COUNTDOWN, etc.)
         }
-        if(GameManager.Instance.state == GameManager.GameState.PREGAME || GameManager.Instance.state == GameManager.GameState.WAVEEND || GameManager.Instance.state == GameManager.GameState.GAMEOVER)
-        {
-            tmp.text = "Spend Time: " + Mathf.Floor(waveSpendTime).ToString("F0") + "s"; //
-            tmp.enabled = true;
-        }
-        else
-        {
-            tmp.enabled = false;
-        }
-           // Debug.Log(GameManager.Instance.state);
     }
 }

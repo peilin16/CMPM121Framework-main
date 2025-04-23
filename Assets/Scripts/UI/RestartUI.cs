@@ -1,31 +1,25 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RestartUI : MonoBehaviour
 {
-    public GameObject restartUI; // TMP_Text
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void Start()
+    public GameObject restartUI;
+    public static RestartUI Instance;
+    void Awake()
     {
-        enabled = false; // Ω˚”√Ω≈±æ±‹√‚¥ÌŒÛ
-                         // restartUI.SetActive(false);
+        Instance = this;
+        restartUI.SetActive(false); // Hide at start
     }
 
-    // Update is called once per frame
-    public void Update()
+    public void Show()
     {
         Debug.Log("1111");
-        if (GameManager.Instance.state == GameManager.GameState.GAMEOVER)
-        {
-            enabled = true; // 
-            Debug.Log("You Lost");
-           // restartUI.SetActive(true);
-        }
-        else
-        {
-            //restartUI.SetActive(false);
-        }
+        restartUI.SetActive(true);
     }
-
-
+    public void RestartGame()
+    {
+        GameManager.Instance.state = GameManager.GameState.PREGAME;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Restart current scene
+    }
 }

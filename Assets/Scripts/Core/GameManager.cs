@@ -45,6 +45,10 @@ public class GameManager
     public int enemy_count { get { return enemies.Count; } }
 
     public int defectCount;
+
+
+
+
     public void AddEnemy(GameObject enemy)
     {
         enemies.Add(enemy);
@@ -58,7 +62,7 @@ public class GameManager
 
     public void DestroyAllEnemies()
     {
-        // 创建临时列表避免修改正在遍历的集合
+        
         List<GameObject> enemiesToDestroy = new List<GameObject>(enemies);
 
         foreach (GameObject enemy in enemiesToDestroy)
@@ -68,16 +72,16 @@ public class GameManager
                 EnemyController controller = enemy.GetComponent<EnemyController>();
                 if (controller != null)
                 {
-                    controller.Die(); // 调用敌人的Die方法进行清理
+                    controller.Die(); // clear emeny
                 }
                 else
                 {
-                    GameObject.Destroy(enemy); // 如果没有控制器，直接销毁
+                    GameObject.Destroy(enemy);
                 }
             }
         }
 
-        enemies.Clear(); // 清空列表
+        enemies.Clear(); // clear
     }
     public GameObject GetClosestEnemy(Vector3 point)
     {

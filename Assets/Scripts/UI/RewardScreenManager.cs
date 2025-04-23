@@ -12,13 +12,10 @@ public class RewardScreenManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GameManager.Instance.state != GameManager.GameState.GAMEOVER )
-        {
-
-        }
+        //Debug.Log("wave");
         if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
         {
-
+            //Debug.Log("wave111");
             rewardUI.SetActive(true);
         }
         else

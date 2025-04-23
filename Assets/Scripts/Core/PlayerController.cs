@@ -67,7 +67,9 @@ public class PlayerController : MonoBehaviour
     {
         GameManager.Instance.state = GameManager.GameState.GAMEOVER;
         GameManager.Instance.DestroyAllEnemies(); // 新增这行代码
-        
+                                                  // 获取RestartUI实例并调用方法
+                                                  // Show the restart UI
+        RestartUI.Instance?.Show();
     }
 
 }

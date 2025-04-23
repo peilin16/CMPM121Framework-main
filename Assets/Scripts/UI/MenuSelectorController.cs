@@ -32,11 +32,15 @@ public class MenuSelectorController : MonoBehaviour
     public void SetLevel(string text)
     {
         level = text;
-        label.text = text;
+        //label.text = text;
     }
-
+    public void RestartLevel()
+    {
+        
+    }
     public void StartLevel()
     {
+        
         spawner.StartLevel(level);
     }
 }

@@ -120,65 +120,60 @@ public class EnemySpawner : MonoBehaviour
         level_selector.gameObject.SetActive(false);
         // this is not nice: we should not have to be required to tell the player directly that the level is starting
         GameManager.Instance.player.GetComponent<PlayerController>().StartLevel();
-        
+
+        currentWave = 0;
 
 
-
-        StartCoroutine(SpawnWave());
+        StartCoroutine(SpawnWave(currentWave));
         //Debug.Log(currentWave);
     }
 
     public void NextWave()
     {
         //currentWave = currentWave + 1;
-        StartCoroutine(SpawnWave());
+        if (GameManager.Instance.state == GameManager.GameState.WAVEEND)
+        {
+            currentWave++;
+            if (currentWave < easyLevelData.waves)
+            {
+                StartCoroutine(SpawnWave(currentWave));
+            }
+            else
+            {
+                Debug.Log("All waves complete!");
+                // Optionally show final screen
+            }
+        }
     }
 
 
-    IEnumerator SpawnWave()
+    IEnumerator SpawnWave(int waveIndex)
     {
-        GameManager.Instance.state = GameManager.GameState.COUNTDOWN;
-        GameManager.Instance.countdown = 3;
-        for (int i = 3; i > 0; i--)
-        {
-
-            if (GameManager.Instance.state == GameManager.GameState.GAMEOVER || GameManager.Instance.state == GameManager.GameState.PREGAME)
-                yield break;
-
-            yield return new WaitForSeconds(1);
-            GameManager.Instance.countdown--;
-        }
         GameManager.Instance.state = GameManager.GameState.INWAVE;
-        // get zombie
-
-        /*
-        foreach (var monster in levels)
+        GameManager.Instance.countdown = 3;
+        foreach (var config in easyLevelData.spawns)
         {
-            if (level["name"].ToString() == "Easy")
+            if (config.sequence == null || waveIndex >= config.sequence.Length) continue;
+
+            int waveNum = config.sequence[waveIndex];
+            int count = RPNCalculator.CalculateEnemyCount(config.count, waveNum);
+            count = Mathf.Max(1, count);
+
+            Debug.Log($"Spawning {config.enemy} for wave {waveNum}, count={count}");
+
+            for (int i = 0; i < count; i++)
             {
-                Debug.LogError(level);
-                easyLevelData = JsonUtility.FromJson<LevelData>(level.ToString());
-                break;
+                if (config.enemy == "zombie") SpawnZombie(config, waveNum);
+                else if (config.enemy == "skeleton") SpawnSkeleton(config, waveNum);
+
+                yield return new WaitForSeconds(0.1f);
             }
-        }*/
-        SpawnConfig zombieSpawn = easyLevelData.spawns[0];//easyLevelData.spawns.FirstOrDefault(s => s.enemy == "zombie");
-        SpawnConfig skeletonSpawn = easyLevelData.spawns[1];
-
-
-        if (zombieSpawn == null || skeletonSpawn == null)
-        {
-            Debug.LogError("spawn config not found");
-            yield break;
         }
 
-        yield return StartCoroutine(SpawnBySequence(zombieSpawn, "zombie"));
-        yield return StartCoroutine(SpawnBySequence(skeletonSpawn, "skeleton"));
-
+        // Wait until all enemies are cleared
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
 
-
-        if(GameManager.Instance.state != GameManager.GameState.GAMEOVER)
-            GameManager.Instance.state = GameManager.GameState.WAVEEND;
+        GameManager.Instance.state = GameManager.GameState.WAVEEND;
     }
 
     
