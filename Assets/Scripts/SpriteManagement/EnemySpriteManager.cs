@@ -49,7 +49,7 @@ public class EnemySpriteManager : IconManager
 
     public EnemySprite GetEnemyData(string enemyName)
     {
-        Debug.Log("");
+        Debug.Log("Get:"+ enemyName);
         if (EnemyData.TryGetValue(enemyName, out EnemySprite data))
         {
             return data;

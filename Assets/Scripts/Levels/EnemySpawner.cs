@@ -79,6 +79,10 @@ public class EnemySpawner : MonoBehaviour
                                 {
                                     config.sequence[i] = (int)sequenceArray[i];
                                 }
+                            }else
+                            {
+                                config.sequence = new int[] { 1 };
+                                Debug.LogWarning($"SpawnConfig '{config.enemy}' missing sequence, defaulting to [1]");
                             }
                             
 
@@ -166,7 +170,7 @@ public class EnemySpawner : MonoBehaviour
             {
                 if (config.enemy == "zombie") SpawnZombie(config, waveNum);
                 else if (config.enemy == "skeleton") SpawnSkeleton(config, waveNum);
-
+                else if (config.enemy == "warlock") SpawnWarlock(config, waveNum);
                 yield return new WaitForSeconds(0.1f);
             }
         }
