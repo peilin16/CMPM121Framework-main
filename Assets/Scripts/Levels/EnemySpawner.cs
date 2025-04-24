@@ -80,6 +80,7 @@ public class EnemySpawner : MonoBehaviour
                                     config.sequence[i] = (int)sequenceArray[i];
                                 }
                             }
+                            
 
                             spawnsList.Add(config);
                         }
@@ -198,6 +199,9 @@ public class EnemySpawner : MonoBehaviour
 
             int currentWaveValue = config.sequence[sequenceIndex];
             
+
+
+
             int count = RPNCalculator.CalculateEnemyCount(config.count, currentWaveValue);
             count = Mathf.Max(1, count); 
 
@@ -213,6 +217,9 @@ public class EnemySpawner : MonoBehaviour
                         break;
                     case "skeleton":
                         SpawnSkeleton(config, currentWaveValue);
+                        break;
+                    case "warlock":
+                        SpawnWarlock(config, currentWaveValue);
                         break;
                 }
                 yield return new WaitForSeconds(0.1f); 
@@ -275,6 +282,12 @@ public class EnemySpawner : MonoBehaviour
     void SpawnSkeleton(SpawnConfig config, int wave)
     {
         SpawnEnemy(config, wave, 1); 
+    }
+
+    void SpawnWarlock(SpawnConfig config, int wave)
+    {
+        //index is 2
+        SpawnEnemy(config, wave, 2);
     }
 
     void SpawnEnemy(SpawnConfig config, int wave, int spriteIndex)
