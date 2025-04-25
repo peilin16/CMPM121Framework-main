@@ -177,8 +177,8 @@ public class EnemySpawner : MonoBehaviour
 
         // Wait until all enemies are cleared
         yield return new WaitWhile(() => GameManager.Instance.enemy_count > 0);
-
-        GameManager.Instance.state = GameManager.GameState.WAVEEND;
+        if(GameManager.Instance.state != GameManager.GameState.GAMEOVER)
+            GameManager.Instance.state = GameManager.GameState.WAVEEND;
     }
 
     
